@@ -1,0 +1,66 @@
+[project]
+name = "hetzner-s2s"
+version = "0.1.0"
+description = "Snapshot a server in Hetzner and recover from snapshot using the API via Python lib."
+authors = [
+    {name = "Josep M Homs",email = "jmhoms@gmail.com"}
+]
+license = {text = "GPL-3.0"}
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "requests (>=2.32.3,<3.0.0)",
+    "hcloud (>=2.4.0,<3.0.0)"
+]
+
+[tool.poetry]
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+pytest = "^8.3.5"
+ruff = "^0.11.7"
+mypy = "^1.15.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+hetzner-s2s = "hetzner_s2s.__main__:main"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+select = ["ALL"]
+# select = ["A", "B", "C", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+ignore = [
+    "ANN",    # Type hints related, let mypy handle these.
+    "COM812", # "Trailing comma missing". If black is happy, I'm happy.
+    "E501",   # "Line too long". If black is happy, I'm happy.
+    # "EM101",    # "Exception must not use a string literal, assign to variable first"
+    # "EM102",    # "Exception must not use an f-string literal, assign to variable first"
+    "PTH", # User Pathlib stuff over os.*. Should migrate to Pathlib at some point.
+    # "RET504",   # "Unnecessary variable assignment before `return` statement"
+    # "S101",     # "Use of `assert` detected"
+    # "SIM108",   # "Use ternary operator ...". Ternary is harmful for readability in some cases.
+    # "TRY003",   # "Avoid specifying long messages outside the exception class"
+]
+
+[tool.ruff.pydocstyle]
+convention = "google" # Accepts: "google", "numpy", or "pep257".
+
+[tool.mypy]
+# mypy_path = "$MYPY_CONFIG_FILE_DIR/hetzner_s2s/stubs"
+python_version = "3.12"
+disallow_untyped_defs = true
+show_error_codes = true
+no_implicit_optional = true
+warn_return_any = true
+warn_unused_ignores = true
+show_traceback = true
+packages = ["hetzner_s2s"]
+exclude = []
+
+[[tool.mypy.overrides]]
+module = "validators.*"
+ignore_missing_imports = true
